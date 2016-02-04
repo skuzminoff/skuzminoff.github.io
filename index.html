@@ -1,0 +1,33 @@
+<head>
+    <script type="text/javascript" src="./js/main.js"></script>
+    <script type="text/javascript" src="./js/constants.js"></script>
+    <script type="text/javascript" src="./js/observable.js"></script>
+    <script type="text/javascript" src="./js/view.js"></script>
+    <script type="text/javascript" src="./js/utils.js"></script>
+    <script type="text/javascript" src="./js/controller.js"></script>
+    <script type="text/javascript" src="./js/cell.js"></script>
+    <script type="text/javascript" src="./js/grid.js"></script>
+    <script type="text/javascript" src="./js/heuristic.js"></script>
+    <script type="text/javascript" src="./js/pathcell.js"></script>
+    <script type="text/javascript" src="./js/astar.js"></script>
+    <link rel="stylesheet" href="./css/style.css" />
+</head>
+
+<body>
+    <div id="gameArea">
+
+    </div>
+    <div id="controls">
+        <span><input id="put_blocks" type="radio" name="mode">Put blocks</span>
+        <span><input id="mark_sources" type="radio" name="mode">Mark sources</span>
+        <span><input id="findPath" type="button" value="Find path"></span>
+        <span><input id="clearAll" type="button" value="Clear"></span>
+    </div>
+    <div id="test"></div>
+    <script>
+        (function() {
+            Main.init();
+         }
+        )();
+    </script>
+</body>

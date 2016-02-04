@@ -1,0 +1,41 @@
+
+#controls
+{
+    
+}
+
+.hidden
+{
+    display: none;
+}
+
+.gametable{
+    border: 1px solid black;
+    width: 100%;
+}
+
+.gametable_row{
+    
+}
+
+.gametable_col{
+    border: 1px solid black;
+    height: 20px;
+}
+
+.block{
+    background-color: black;
+}
+
+.path{
+    background-color: green;
+}
+
+.source{
+    background-color: red;
+}
+
+.footprint{
+    background-color: gray;
+}
+
