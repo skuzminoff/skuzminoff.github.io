@@ -9,14 +9,20 @@ var Astar = function (grid, start, end, heuristic) {
     this.start = start;
     this.end = end;
     this.grid = grid;
-    this.heuristic = heuristic;
+    if (heuristic == null || heuristic === undefined) {
+         heuristic = function (start, end) {
+        return Math.abs(start.coord_x - end.coord_x) + Math.abs(start.coord_y - end.coord_y);}
+    }
+    else {
+        this.heuristic = heuristic;
+    }
 }
 
 /**
  * Finding path function
  * @return {Array} path
  */
-Astar.prototype.findPath = function () {
+Astar.prototype.findPath = function (drawFootprintsCallback) {
     var open = [],
         closed = [];
 
@@ -31,7 +37,7 @@ Astar.prototype.findPath = function () {
         var index = open.lastIndexOf(current);
         open.splice(index, 1); // remove current from open vertexes list
         closed.push(current); // annd current to closed vertexes list
-        this.notify(closed);
+        
 
         var neighboursCells = this.grid.getAllowedNeighbours(current.currentCell);
         var neighbours = Utils.convertCellsToPathCells(neighboursCells, current, this.end, this.heuristic);
@@ -54,21 +60,9 @@ Astar.prototype.findPath = function () {
             itemInOpenArray.predCell = current;
             itemInOpenArray.distanceFromStart = item.distanceFromStart;
         });
+        drawFootprintsCallback(Utils.convertToCellArray(closed));
     }
     return null;
-}
-
-/**
- * Notify subscribers to draw processed vertexes
- * @param {Array} closed
- */
-Astar.prototype.notify = function (closed) {
-    var coordsArray = [];
-    closed.forEach(function (item, i, arr) {
-        var elem = item.currentCell;
-        coordsArray.push(elem);
-    });
-    Observerable.triggerEvent("drawVertexes", { 'detail': coordsArray });
 }
 
 /**

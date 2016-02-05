@@ -14,16 +14,30 @@
 </head>
 
 <body>
-    <div id="gameArea">
+    <div id="wrapper">
+        <div id="gameArea">
+
+        </div>
+        <div id="controls">
+            <div id="inner">
+                <div>
+                    <input id="put_blocks" type="radio" name="mode">Put blocks</div>
+                <div>
+                    <input id="mark_sources" type="radio" name="mode">Mark sources</div>
+                <div>
+                    <input id="findPath" type="button" value="Find path">
+                </div>
+                <div>
+                    <input id="clearAll" type="button" value="Clear">
+                </div>
+            </div>
+            <div id="infoArea">
+
+            </div>
+        </div>
 
     </div>
-    <div id="controls">
-        <span><input id="put_blocks" type="radio" name="mode">Put blocks</span>
-        <span><input id="mark_sources" type="radio" name="mode">Mark sources</span>
-        <span><input id="findPath" type="button" value="Find path"></span>
-        <span><input id="clearAll" type="button" value="Clear"></span>
-    </div>
-    <div id="test"></div>
+
     <script>
         (function() {
             Main.init();

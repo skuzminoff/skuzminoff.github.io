@@ -5,6 +5,7 @@ var View = {
     markSourcesRadio: null,
     generateButton: null,
     clearButton: null,
+    infoArea: null,
 
     drawTable: function (cols, rows) {
         var that = this;
@@ -24,8 +25,6 @@ var View = {
     },
 
     drawPath: function (path) {
-        if (path == null) { alert("No path found."); return; }
-
         var that = this;
         path.forEach(function (item, i, arr) {
             var cell = that.gameTable.rows[item.coord_y].cells[item.coord_x];
@@ -43,6 +42,7 @@ var View = {
         this.drawTable(Constants.colsNumber, Constants.rowsNumber);
         var tds = document.getElementsByClassName("gametable_col");
         this.clearButton = document.getElementById("clearAll");
+        this.infoArea = document.getElementById("infoArea");
         var that = this;
         for (var i = 0; i < tds.length; i++) {
             tds[i].onclick = function () {
@@ -58,17 +58,29 @@ var View = {
                 }
             };
         }
-        Observerable.addListener(this, "drawVertexes", "setFootprints");
+        // Observerable.addListener(this, "drawVertexes", "setFootprints");
     },
 
-    setFootprints: function (e) {
-        if (e.detail)
-            var that = View.gameTable;
-        var footprints = e.detail;
+    setFootprints: function (footprints) {
+        if (footprints.constructor !== Array || footprints.length == 0)
+            return;
+        var that = View.gameTable;
         footprints.forEach(function (item, i, arr) {
+            if (that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") || that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) { return; }
             that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
         });
     },
+
+    /*drawFootprints: function (footprints) {
+        if (footprints.constructor !== Array || footprints.length == 0)
+            return;
+        var that = View.gameTable;
+        footprints.forEach(function (item, i, arr) {
+            if (that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") || that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) { return; }
+            that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
+        })
+        setTimeout(this.drawFootprints, 2000);
+    },*/
 
     clearTable: function () {
         for (var i = 0; i < Constants.rowsNumber; i++) {
@@ -87,6 +99,32 @@ var View = {
         }
         this.putBlocksModeRadio.checked = false;
         this.markSourcesRadio.checked = false;
+
+        if (this.infoArea.classList.contains("failure"))
+            this.infoArea.classList.remove("failure");
+        if (this.infoArea.classList.contains("success"))
+            this.infoArea.classList.remove("success");
+        if (this.infoArea.classList.contains("info"))
+            this.infoArea.classList.remove("info");
+
+        this.infoArea.innerText = "";
+    },
+
+    setInfoText: function (messageType, text) {
+
+        if (messageType == "failure") {
+            this.infoArea.classList.add("failure");
+        }
+        else if (messageType == "success") {
+            this.infoArea.classList.add("success");
+        }
+        else if (messageType == "info") {
+            this.infoArea.classList.add("info");
+        }
+
+        var paragraph = document.createElement("p");
+        paragraph.innerText = text;
+        this.infoArea.appendChild(paragraph);
     }
 
 

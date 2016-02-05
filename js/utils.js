@@ -7,7 +7,7 @@ var Utils = {
     convertCellsToPathCells: function (cells, v, end, heuristic) {
         var pathCellsArray = [];
         cells.forEach(function (item, i, arr) {
-            var pathCell = new PathCell(item, v,heuristic(item, end), v.distanceFromStart + Constants.neighbourDistance);
+            var pathCell = new PathCell(item, v, heuristic(item, end), v.distanceFromStart + Constants.neighbourDistance);
             pathCellsArray.push(pathCell);
         });
         return pathCellsArray;
@@ -35,12 +35,21 @@ var Utils = {
         });
         return existence;
     },
-    
-    getPathCellFromArray: function(item, array){
-        for(var i=0; i< array.length; i++){
+
+    getPathCellFromArray: function (item, array) {
+        for (var i = 0; i < array.length; i++) {
             if (array[i].currentCell.coord_x == item.currentCell.coord_x && array[i].currentCell.coord_y == item.currentCell.coord_y)
-                return array[i]; 
+                return array[i];
         }
         return null;
+    },
+
+    convertToCellArray: function (pathCellArray) {
+        var coordsArray = [];
+        pathCellArray.forEach(function (item, i, arr) {
+            var elem = item.currentCell;
+            coordsArray.push(elem);
+        });
+        return coordsArray;
     }
 };

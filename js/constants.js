@@ -3,7 +3,7 @@
  */
 
 var Constants = {
-    rowsNumber: 5,
-    colsNumber: 5,
+    rowsNumber: 50,
+    colsNumber: 50,
     neighbourDistance: 1
 };

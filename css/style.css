@@ -1,41 +1,77 @@
 
-#controls
-{
-    
+#wrapper {
+    overflow: hidden;
 }
 
-.hidden
-{
-    display: none;
+#gamearea {
+    overflow: hidden;
+    float: left;
+    height: 100%;
+    width: 64%;
 }
 
-.gametable{
+#controls {
+    overflow: hidden;
+    float: left;
+    height: 100%;
+    width: 36%;
+}
+
+#inner {
+    padding-top: 100px;
+    display: table;
+    margin: 0 auto;
+}
+
+#inner > div {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+#infoArea {
+    width: 30%;
+    height: 30px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+
+.gametable {
     border: 1px solid black;
     width: 100%;
+    border-collapse: collapse;
+    height: 100%;
 }
 
-.gametable_row{
-    
-}
-
-.gametable_col{
+.gametable_col {
     border: 1px solid black;
     height: 20px;
 }
 
-.block{
+.block {
     background-color: black;
 }
 
-.path{
+.path {
     background-color: green;
 }
 
-.source{
+.source {
     background-color: red;
 }
 
-.footprint{
+.footprint {
     background-color: gray;
 }
 
+.success {
+    background-color: limegreen;
+}
+
+.failure {
+    background-color: orangered;
+}
+
+.info {
+    background-color: yellow;
+}
