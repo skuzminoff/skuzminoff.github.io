@@ -13,12 +13,21 @@ var Controller = {
             var sources = View.gameTable.getElementsByClassName("source");
             var source1 = grid.getCellAt(sources[0].cellIndex, sources[0].parentNode.rowIndex);
             var source2 = grid.getCellAt(sources[1].cellIndex, sources[1].parentNode.rowIndex);
-            
-          
-            var alg = new Astar(grid, source1, source2, Heuristic.manhattanHeuristic);
+
+
+            var alg = new Astar(grid, source2, source1, Heuristic.manhattanHeuristic);
             //var path = setTimeout(alg.findPath(View.setFootprints), 3000);
-            var path = alg.findPath(View.setFootprints);
-            that.searchCompleted(path);
+            var drawQueue = [];
+            var path = alg.findPath(function (footsteps) {
+                drawQueue.push({"cells" : footsteps, "className": "footprint"});
+            });
+            
+            if (path != null){
+                drawQueue.push({"cells" : path, "className": "path"});
+            }
+            
+            that.delayedDrawFootsteps(drawQueue, 0);
+            //that.searchCompleted(path);
         };
 
         View.clearButton.onclick = function () {
@@ -27,14 +36,27 @@ var Controller = {
     },
 
 
+    delayedDrawFootsteps: function (drawQueue, step) {
+        step =  step || 0;
+
+        if (step < drawQueue.length) {
+           View.drawCellsArray(drawQueue[step].cells, drawQueue[step].className);
+            setTimeout(function () {
+                this.Controller.delayedDrawFootsteps(drawQueue, step+1);
+            }, 1000);
+        }
+
+        return;
+    },
+
     searchCompleted: function (path) {
-        if (path == null){
+        if (path == null) {
             View.setInfoText("failure", "No path has been found");
             return;
         }
-        
+
         View.drawPath(path);
-         View.setInfoText("success", "Path has been found");
+        View.setInfoText("success", "Path has been found");
     },
 
     init: function () {

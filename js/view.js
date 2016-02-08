@@ -66,10 +66,34 @@ var View = {
             return;
         var that = View.gameTable;
         footprints.forEach(function (item, i, arr) {
-            if (that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") || that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) { return; }
-            that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
+            if (!that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") && !that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) {
+                that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
+            }
         });
     },
+    
+    drawCellsArray:  function(cells, className){
+        var that = View.gameTable;
+        if (className == "footprint"){
+            cells.forEach(function (item, i, arr) {
+            if (!that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") && !that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) {
+                that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
+            }
+        });
+        }
+        
+        if (className == "path")
+        {
+            cells.forEach(function (item, i, arr) {
+            var cell = that.rows[item.coord_y].cells[item.coord_x];
+            if (cell.classList.contains("footprint"))
+            { cell.classList.remove("footprint"); }
+            that.rows[item.coord_y].cells[item.coord_x].classList.add("path");
+        });
+        }
+        
+    },
+   
 
     /*drawFootprints: function (footprints) {
         if (footprints.constructor !== Array || footprints.length == 0)
