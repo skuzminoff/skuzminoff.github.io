@@ -30,36 +30,40 @@ Astar.prototype.findPath = function (drawFootprintsCallback) {
     open.push(startPathNode);
     while (open.length > 0) {
         open.sort(function (a, b) { return a.FullPathLength() - b.FullPathLength(); })
-        var current = open[0];
+        var current = open.shift();
         if (current.currentCell.coord_x == this.end.coord_x && current.currentCell.coord_y == this.end.coord_y) {
             return this.restorePath(current);
         }
-        var index = open.lastIndexOf(current);
-        open.splice(index, 1); // remove current from open vertexes list
+        // var index = open.indexOf(current);
+        // open.splice(index, 1); // remove current from open vertexes list
         closed.push(current); // annd current to closed vertexes list
         
 
         var neighboursCells = this.grid.getAllowedNeighbours(current.currentCell);
         var neighbours = Utils.convertCellsToPathCells(neighboursCells, current, this.end, this.heuristic);
         var that = this;
-        neighbours.forEach(function (item, i, arr) {
+        for (var i = 0; i < neighbours.length; i++) {
+            var item = neighbours[i];
             if (Utils.cellInArray(item.currentCell, closed)) {
-                return;
-            }
-            var tenatative_g_score = current.distanceFromStart + Constants.neighbourDistance;
-            item.distanceFromStart = tenatative_g_score;
-            item.heurValue = that.heuristic(item.currentCell, that.end);
-            if (!Utils.cellInArray(item, open)) {
-                open.push(item);
-            }
-            else if (tenatative_g_score >= item.distanceFromStart) { // triangle inequality
-                return;
+                continue;
             }
 
-            var itemInOpenArray = Utils.getPathCellFromArray(item, open);
-            itemInOpenArray.predCell = current;
-            itemInOpenArray.distanceFromStart = item.distanceFromStart;
-        });
+            var g_score = current.distanceFromStart + Constants.neighbourDistance;
+            
+            if (!Utils.cellInArray(item, open) || g_score < item.distanceFromStart) {
+                item.distanceFromStart = g_score;
+                item.heurValue = that.heuristic(item.currentCell, that.end);
+                
+                if (!Utils.cellInArray(item, open)) {
+                    open.push(item);
+                }
+                else {
+                    var itemInOpenArray = Utils.getPathCellFromArray(item, open);
+                    itemInOpenArray.predCell = current;
+                    itemInOpenArray.distanceFromStart = item.distanceFromStart;
+                }
+            }
+        }
         drawFootprintsCallback(Utils.convertToCellArray(closed));
     }
     return null;

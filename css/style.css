@@ -3,7 +3,7 @@
     overflow: hidden;
 }
 
-#gamearea {
+#gameArea {
     overflow: hidden;
     float: left;
     height: 100%;
@@ -36,14 +36,14 @@
 }
 
 
-.gametable {
+.gameTable {
     border: 1px solid black;
     width: 100%;
     border-collapse: collapse;
     height: 100%;
 }
 
-.gametable_col {
+.gametableCol {
     border: 1px solid black;
     height: 20px;
 }

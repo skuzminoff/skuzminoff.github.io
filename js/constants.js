@@ -3,7 +3,8 @@
  */
 
 var Constants = {
-    rowsNumber: 5,
-    colsNumber: 5,
-    neighbourDistance: 1
+    rowsNumber: 50,
+    colsNumber: 50,
+    neighbourDistance: 1,
+    drawSpeed: 150
 };

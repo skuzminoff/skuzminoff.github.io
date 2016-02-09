@@ -14,20 +14,25 @@ var Controller = {
             var source1 = grid.getCellAt(sources[0].cellIndex, sources[0].parentNode.rowIndex);
             var source2 = grid.getCellAt(sources[1].cellIndex, sources[1].parentNode.rowIndex);
 
-
             var alg = new Astar(grid, source2, source1, Heuristic.manhattanHeuristic);
-            //var path = setTimeout(alg.findPath(View.setFootprints), 3000);
             var drawQueue = [];
             var path = alg.findPath(function (footsteps) {
-                drawQueue.push({"cells" : footsteps, "className": "footprint"});
+                drawQueue.push({ "cells": footsteps, "className": "footprint" });
             });
-            
-            if (path != null){
-                drawQueue.push({"cells" : path, "className": "path"});
+
+            if (path != null) {
+                drawQueue.push({ "cells": path, "className": "path" });
             }
-            
-            that.delayedDrawFootsteps(drawQueue, 0);
-            //that.searchCompleted(path);
+
+            that.delayedDraw(drawQueue, 0);
+
+            if (path != null) {
+                View.setInfoText("success", "Path has been found.");
+            }
+            else {
+                View.setInfoText("failure", "Path hasn't been found.");
+            }
+
         };
 
         View.clearButton.onclick = function () {
@@ -36,27 +41,17 @@ var Controller = {
     },
 
 
-    delayedDrawFootsteps: function (drawQueue, step) {
-        step =  step || 0;
+    delayedDraw: function (drawQueue, step) {
+        step = step || 0;
 
         if (step < drawQueue.length) {
-           View.drawCellsArray(drawQueue[step].cells, drawQueue[step].className);
+            View.draw(drawQueue[step].cells, drawQueue[step].className);
             setTimeout(function () {
-                this.Controller.delayedDrawFootsteps(drawQueue, step+1);
-            }, 1000);
+                this.Controller.delayedDraw(drawQueue, step + 1);
+            }, Constants.drawSpeed);
         }
 
         return;
-    },
-
-    searchCompleted: function (path) {
-        if (path == null) {
-            View.setInfoText("failure", "No path has been found");
-            return;
-        }
-
-        View.drawPath(path);
-        View.setInfoText("success", "Path has been found");
     },
 
     init: function () {

@@ -5,20 +5,20 @@ var View = {
     markSourcesRadio: null,
     generateButton: null,
     clearButton: null,
-    infoArea: null,
+    info: null,
 
     drawTable: function (cols, rows) {
         var that = this;
         that.gameTable = document.createElement("table");
-        that.gameTable.className = "gametable";
+        that.gameTable.className = "gameTable";
         for (var i = 0; i < cols; i++) {
             var tr = that.gameTable.insertRow();
             tr.id = "row" + i.toString();
-            tr.className = "gametable_row";
+            tr.className = "gametableRow";
             for (var j = 0; j < rows; j++) {
                 var td = tr.insertCell();
                 td.id = "col" + j.toString();
-                td.className = "gametable_col";
+                td.className = "gametableCol";
             }
         }
         this.gameArea.appendChild(this.gameTable);
@@ -36,11 +36,11 @@ var View = {
 
     init: function () {
         this.gameArea = document.getElementById("gameArea");
-        this.putBlocksModeRadio = document.getElementById("put_blocks");
-        this.markSourcesRadio = document.getElementById("mark_sources");
+        this.putBlocksModeRadio = document.getElementById("putBlocks");
+        this.markSourcesRadio = document.getElementById("markSources");
         this.generateButton = document.getElementById("findPath");
         this.drawTable(Constants.colsNumber, Constants.rowsNumber);
-        var tds = document.getElementsByClassName("gametable_col");
+        var tds = document.getElementsByClassName("gametableCol");
         this.clearButton = document.getElementById("clearAll");
         this.infoArea = document.getElementById("infoArea");
         var that = this;
@@ -58,53 +58,31 @@ var View = {
                 }
             };
         }
-        // Observerable.addListener(this, "drawVertexes", "setFootprints");
     },
 
-    setFootprints: function (footprints) {
-        if (footprints.constructor !== Array || footprints.length == 0)
-            return;
+    draw: function (toDraw, className) {
         var that = View.gameTable;
-        footprints.forEach(function (item, i, arr) {
-            if (!that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") && !that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) {
-                that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
-            }
-        });
-    },
-    
-    drawCellsArray:  function(cells, className){
-        var that = View.gameTable;
-        if (className == "footprint"){
-            cells.forEach(function (item, i, arr) {
-            if (!that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") && !that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) {
-                that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
-            }
-        });
-        }
-        
-        if (className == "path")
-        {
-            cells.forEach(function (item, i, arr) {
-            var cell = that.rows[item.coord_y].cells[item.coord_x];
-            if (cell.classList.contains("footprint"))
-            { cell.classList.remove("footprint"); }
-            that.rows[item.coord_y].cells[item.coord_x].classList.add("path");
-        });
-        }
-        
-    },
-   
+        if (className == "footprint") {
+            toDraw.forEach(function (item, i, arr) {
+                var cell = that.rows[item.coord_y].cells[item.coord_x];
+                if (!cell.classList.contains("source")) {
+                    cell.classList.add("footprint");
+                }
+            });
 
-    /*drawFootprints: function (footprints) {
-        if (footprints.constructor !== Array || footprints.length == 0)
-            return;
-        var that = View.gameTable;
-        footprints.forEach(function (item, i, arr) {
-            if (that.rows[item.coord_y].cells[item.coord_x].classList.contains("source") || that.rows[item.coord_y].cells[item.coord_x].classList.contains("path")) { return; }
-            that.rows[item.coord_y].cells[item.coord_x].classList.add("footprint");
-        })
-        setTimeout(this.drawFootprints, 2000);
-    },*/
+        }
+
+        if (className == "path") {
+            toDraw.forEach(function (item, i, arr) {
+                var cell = that.rows[item.coord_y].cells[item.coord_x];
+                if (cell.classList.contains("footprint")) {
+                    cell.classList.remove("footprint");
+                }
+                cell.classList.add("path");
+            });
+        }
+
+    },
 
     clearTable: function () {
         for (var i = 0; i < Constants.rowsNumber; i++) {
