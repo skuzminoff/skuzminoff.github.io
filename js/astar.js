@@ -29,8 +29,11 @@ Astar.prototype.findPath = function (drawFootprintsCallback) {
     var startPathNode = new PathCell(this.start, null, this.heuristic(this.start, this.end), 0);
     open.push(startPathNode);
     while (open.length > 0) {
-        open.sort(function (a, b) { return a.FullPathLength() - b.FullPathLength(); })
-        var current = open.shift();
+//        open.sort(function (a, b) { return a.FullPathLength() - b.FullPathLength(); })
+  //      var current = open.shift();
+        open.sort(function (a, b) { return b.FullPathLength() - a.FullPathLength(); })
+        var current = open.pop();
+        
         if (current.currentCell.coord_x == this.end.coord_x && current.currentCell.coord_y == this.end.coord_y) {
             return this.restorePath(current);
         }
